@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
+import { GetCapteursService } from '../services/get-capteurs.service';
+import { Subscription } from 'rxjs';
+import { Capteur } from '../capteurs';
 
 @Component({
   selector: 'app-graph-gaz',
@@ -8,7 +11,13 @@ import Chart from 'chart.js';
 })
 export class GraphGazComponent implements OnInit {
 
-  constructor() { }
+  subscription: Subscription;
+  capteurs: Capteur;
+
+  constructor(private capteurService: GetCapteursService) { 
+    this.subscription = this.capteurService.getCapteurs()
+    .subscribe(capteurs => this.capteurs = capteurs)
+  }
 
   ngOnInit(): void {
     var ctx = document.getElementById('graphGaz');

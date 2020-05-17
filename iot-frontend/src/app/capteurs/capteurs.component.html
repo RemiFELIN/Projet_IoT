@@ -1,25 +1,36 @@
-<ul class="list-group">
+<div class="input-group">
+    <input type="text" class="form-control" placeholder="Adresse IP" (ngModel)="ip" aria-describedby="basic-addon2">
+    <select class="custom-select" id="inputGroupSelect04" [(ngModel)]="selectedValue">
+      <option selected disabeld>Choissisez...</option>
+      <option *ngFor="let capt of capteurs"[value]="capt">{{capt.type}}</option>
+    </select>
+    <div class="input-group-append">
+        <button class="btn btn-primary" type="button" (click)="addCapteur()">ajouter</button>
+    </div>
+</div>
 
-    <li *ngIf="gaz == 2" class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
-        Alerte un gaz a été détecté
-        <img src="../../assets/death.svg" class="icon">
+<ul class="list-group" *ngFor="let capteur of listOfCapteur">
+
+    <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+        {{capteur.text}}
+        <img [src]="capteur.src" class="icon">
     </li>
-    <li *ngIf="gaz == 1" class="list-group-item d-flex justify-content-between align-items-center list-group-item-warning">
+    <!-- <li *ngIf="gaz == 2" class="list-group-item col-xs-6 d-flex justify-content-between align-items-center list-group-item-danger">
+        Alerte un gaz a été détecté
+        <img [src]="../../assets/death.svg" class="icon">
+    </li>
+    <li *ngIf="gaz == 1" class="list-group-item col-xs-6 d-flex justify-content-between align-items-center list-group-item-warning">
         Niveau de gaz inquiétant
         <img src="../../assets/warning.svg" class="icon">
     </li>
-    <li *ngIf="gaz == 0" class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
-        Tout va bien, aucun gaz detecté
+    <li *ngIf="gaz == 0" class="list-group-item col-xs-6 d-flex justify-content-between align-items-center list-group-item-success">
+        <b>192.168.1.1</b> Tout va bien, aucun gaz detecté
         <img src="../../assets/safe.svg" class="icon">
-    </li>
+    </li> -->
 
-    <li *ngIf="mouvement == 2" class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
-        Alerte une présence a été détecté
+    <!-- <li *ngIf="mouvement == 2" class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+        Alerte un mouvement a été detecté
         <img src="../../assets/thief.svg" class="icon">
-    </li>
-    <li *ngIf="mouvement == 1" class="list-group-item d-flex justify-content-between align-items-center list-group-item-warning">
-        Un mouvement a été detecté chez vous
-        <img src="../../assets/warning.svg" class="icon">
     </li>
     <li *ngIf="mouvement == 0" class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
         Aucun mouvement detecté chez vous
@@ -37,6 +48,6 @@
     <li *ngIf="bruit == 0" class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
         Votre maison est calme, aucun bruit detecté
         <img src="../../assets/safe.svg" class="icon">
-    </li>
+    </li> -->
 
 </ul>

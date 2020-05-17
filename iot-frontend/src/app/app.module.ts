@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CapteursComponent } from './capteurs/capteurs.component';
 import { GraphComponent } from './graph/graph.component';
+import { HttpClientModule }    from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { GraphComponent } from './graph/graph.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     NgbModule,
     FormsModule
   ],

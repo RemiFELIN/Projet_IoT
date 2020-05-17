@@ -26,7 +26,8 @@ export class CapteursComponent {
   constructor(private capteurService: GetCapteursService) { 
     this.capteurs = capteurs;
     this.subscription = this.capteurService.getCapteurs()
-    .subscribe(capteurs => this.data = capteurs)
+    .subscribe(capteurs => this.data = capteurs);
+    this.capteurService.requestCapteurs();
   }
 
   addCapteur(){

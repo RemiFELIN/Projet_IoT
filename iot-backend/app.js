@@ -77,9 +77,10 @@ client.on('message', function(topic, message) {
     try {
         if (topic == TOPIC_MICRO || topic == TOPIC_MOUVEMENT || topic == TOPIC_LUMIERE || topic == TOPIC_GAZ || topic == TOPIC_TEMP) {
             var res = getMessageFromObject(message);
-            if (ifExist(res)) {
+            if (isExist(res)) {
                 updateValue(res)
             } else {
+                console.log('HERE : -> false')
                 addCapteur(res)
             }
         }
@@ -102,17 +103,17 @@ var list = [{ who: "5E:FF:56:A2:AF:15", value: 0, type: "Capteur senseur" },
 
 function simulation() {
   setInterval(() => {
-    var list = [{who: "5E:FF:56:A2:AF:15", value: Math.random() * 100, type: "Capteur senseur"}, 
-                {who: "5E:FF:56:A2:AF:41", value: Math.random() * 100, type: "Capteur mouvement"}, 
-                {who: "5E:FF:56:A2:AF:10", value: Math.random() * 100, type: "Microphone"}, 
-                {who: "5E:FF:56:A1:AF:15", value: Math.random() * 100, type: "Capteur thermique"}, 
-                {who: "5E:FF:01:A2:AF:15", value: Math.random() * 100, type: "Capteur lumiere"}]
+    var list = [{who: "5E:FF:56:A2:AF:15", value: Math.floor(Math.random() * 100), type: "Capteur senseur"}, 
+                {who: "5E:FF:56:A2:AF:41", value: Math.floor(Math.random() * 100), type: "Capteur mouvement"}, 
+                {who: "5E:FF:56:A2:AF:10", value: Math.floor(Math.random() * 100), type: "Microphone"}, 
+                {who: "5E:FF:56:A1:AF:15", value: Math.floor(Math.random() * 100), type: "Capteur thermique"}, 
+                {who: "5E:FF:01:A2:AF:15", value: Math.floor(Math.random() * 100), type: "Capteur lumiere"}]
     list.forEach(element => {
       var s = element.who + ";" + element.value + ";" + element.type
       var ciphertext = CryptoJS.AES.encrypt(s, 'miage').toString();
       console.log('[BEGIN] cryptage: ' + ciphertext)
       var res = getMessageFromObject(ciphertext)
-      if(ifExist(res)) {
+      if(isExist(res.who)){
         updateValue(res)
       } else {
         addCapteur(res)
@@ -142,11 +143,11 @@ function getMessageFromObject(data) {
         var res = originalText.split(';')
         var obj = new Object();
         if (res.length == 3) {
-            obj.mac = res[0];
-            obj.value = res[1];
+            obj.who = res[0];
+            obj.value = parseInt(res[1]);
             obj.type = res[2];
         }
-        console.log('mon objet de retour: [' + obj.mac + ', ' + obj.value + ', ' + obj.type + ']')
+        console.log('mon objet de retour: [' + obj.who + ', ' + obj.value + ', ' + obj.type + ']')
     } else {
         console.log('[WARN] le décryptage a échoué')
     }
@@ -176,12 +177,14 @@ function removeCapteur(capteur) {
 function updateValue(capteur) {
     list.forEach(element => {
         if (element.who == capteur.who) {
-            element.value.push(capteur.value)
+            removeCapteur(element.who)
+            addCapteur(capteur)
         }
     });
 }
 
-function ifExist(capteur) {
+function isExist(capteur) {
+    console.log('capteur? : ' + capteur)
     var res = false
     list.forEach(element => {
         if (element.who == capteur) {
@@ -205,7 +208,7 @@ app.get('/add/:mac', function(req, res) {
 
 app.get('/exist/:mac', function(req, res) {
     console.log(req.params.mac)
-    if (ifExist(req.params.mac)) {
+    if (isExist(req.params.mac)) {
         res.status(200).send('true');
     } else {
         res.status(200).send('false');

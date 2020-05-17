@@ -11,5 +11,5 @@ npm install –g typescript@latest
 
 ## Instructions
 
-Vous aurez besoin de lancer dans un terminal le back et dans un autre le front.
-Plus d'instructions dans les readme dans ses dossiers *iot-backend* et *iot-front-end*
+Vous aurez besoin de lancer dans deux terminal le back et le front.
+Plus d'instructions dans les dossiers *iot-backend* et *iot-frontend* (readme)

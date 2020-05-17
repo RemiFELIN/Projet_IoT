@@ -96,7 +96,7 @@ client.on('message', function (topic, message) {
 /* SECURITE : Algo SHA256 -> décryptage             */
 /************************************************** */
 var list = [{who: "5E:FF:56:A2:AF:15", value: 1, type: "Capteur senseur"}, 
-            {who: "5E:FF:56:A2:AF:41", value: 5, type: "Capteur mouvement"}, 
+            {who: "5E:FF:56:A2:AF:41", value: 0.5, type: "Capteur mouvement"}, 
             {who: "5E:FF:56:A2:AF:10", value: 50, type: "Microphone"}, 
             {who: "5E:FF:56:A1:AF:15", value: 11, type: "Capteur thermique"}, 
             {who: "5E:FF:01:A2:AF:15", value: 100, type: "Capteur lumiere"}]
@@ -113,8 +113,10 @@ function testSHA256() {
 // Pour le front !
 function getMessageFromObject(data) {
     // Tout d'abord, on décode le message avec notre clé publique
-    var bytes  = CryptoJS.AES.decrypt(data, 'miagestic')
-    var originalText = bytes.toString(CryptoJS.enc.Utf8)
+    //var bytes  = CryptoJS.AES.decrypt(data, 'miagestic')
+    //var originalText = bytes.toString(CryptoJS.enc.Utf8)
+    //console.log('cryptage: ' + originalText)
+    originalText = data
     if(originalText.length != 0) {
       // Qui l'a envoyé ? Qu'est ce qu'il a envoyé ?
       // Structure de 'data' : [Adresse MAC];[Value];[Type]

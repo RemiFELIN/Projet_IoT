@@ -66,13 +66,12 @@ client.on('connect', function() {
     client.subscribe(TOPIC_TEMP, function(err) {
         if (!err) {
             console.log('Node Server has subscribed to ', TOPIC_TEMP);
+            simulation()
         }
     })
 });
 
 client.on('message', function(topic, message) {
-
-    console.log(message.toString());
 
     // Parsing du message supposé recu au format JSON
     try {
@@ -109,22 +108,25 @@ function simulation() {
                 {who: "5E:FF:56:A1:AF:15", value: Math.random() * 100, type: "Capteur thermique"}, 
                 {who: "5E:FF:01:A2:AF:15", value: Math.random() * 100, type: "Capteur lumiere"}]
     list.forEach(element => {
-      var res = getMessageFromObject(element)
+      var s = element.who + ";" + element.value + ";" + element.type
+      var ciphertext = CryptoJS.AES.encrypt(s, 'miage').toString();
+      console.log('[BEGIN] cryptage: ' + ciphertext)
+      var res = getMessageFromObject(ciphertext)
       if(ifExist(res)) {
         updateValue(res)
       } else {
         addCapteur(res)
-      } 
+      }
     });
-  }, 10000);
+  }, 8000);
 }
 
 function testSHA256() {
     // Encrypt
-    var ciphertext = CryptoJS.AES.encrypt('5E:FF:56:A2:AF:15;toto titi tutu', 'miagestic').toString();
+    var ciphertext = CryptoJS.AES.encrypt('5E:FF:56:A2:AF:15;toto titi tutu', 'miage').toString();
     console.log('[testSHA256] Voici la data: ' + ciphertext)
-        // Decrypt
-    var bytes = CryptoJS.AES.decrypt(ciphertext, 'miagestic');
+    // Decrypt
+    var bytes = CryptoJS.AES.decrypt(ciphertext, 'miage');
     var originalText = bytes.toString(CryptoJS.enc.Utf8)
     console.log('[testSHA256] Voici la data: ' + originalText) // 'my message'
 }
@@ -132,14 +134,11 @@ function testSHA256() {
 // Pour le front !
 function getMessageFromObject(data) {
     // Tout d'abord, on décode le message avec notre clé publique
-    //var bytes  = CryptoJS.AES.decrypt(data, 'miagestic')
-    //var originalText = bytes.toString(CryptoJS.enc.Utf8)
-    //console.log('cryptage: ' + originalText)
-    originalText = data
+    var bytes  = CryptoJS.AES.decrypt(data, 'miage')
+    var originalText = bytes.toString(CryptoJS.enc.Utf8)
     if (originalText.length != 0) {
         // Qui l'a envoyé ? Qu'est ce qu'il a envoyé ?
         // Structure de 'data' : [Adresse MAC];[Value];[Type]
-        console.log('get: ' + originalText);
         var res = originalText.split(';')
         var obj = new Object();
         if (res.length == 3) {
@@ -194,17 +193,13 @@ function ifExist(capteur) {
 
 app.get('/remove/:mac', function(req, res) {
     toRemove = req.params.mac
-    console.log(toRemove)
     removeCapteur(toRemove)
-    console.log(list)
     res.send(200)
 });
 
 app.get('/add/:mac', function(req, res) {
     toAdd = req.params.mac
-    console.log(toAdd)
     addCapteur(toAdd)
-    console.log(toAdd)
     res.send(200)
 })
 

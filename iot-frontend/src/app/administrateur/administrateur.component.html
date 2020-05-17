@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="col-2">
+        <label>Quel capteur souhaitez vous supprimer :</label>
+    </div>
+    <div class="col-2">
+        <select placeholder="test" name="suppCapteur" [(ngModel)]="suppCapteur">
+            <option *ngFor="let type of capteurs">{{type.type}} : {{type.mac}}</option>
+        </select>
+    </div>
+    <div class="col-2" [hidden]=!suppCapteur>
+        <button (click)="supprimer()" type="button" class="btn btn-warning btn-sm"><i class="fas fa-times"></i> Supprimer</button>
+    </div>
+</div>
+

@@ -2,7 +2,7 @@
     <canvas id="graph"></canvas>
 </ng-template>
 
-<div class="input-group">
+<div class="input-group" *ngIf="radioButton">
     <input type="text" class="form-control" placeholder="Adresse MAC" [(ngModel)]="ip" aria-describedby="basic-addon2">
     <select class="custom-select" id="inputGroupSelect04" [(ngModel)]="selectedValue">
       <option *ngFor="let capt of capteurs"[ngValue]="capt">{{capt.type}}</option>

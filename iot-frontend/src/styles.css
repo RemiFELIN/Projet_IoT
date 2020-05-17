@@ -2,7 +2,7 @@
 
 .linear-gradient {
     background: url("./assets/background.svg");
-    background-size: 80%;
+    background-size: 100%;
     /* background: lightblue; */
     /* background: rgb(148,187,233); */
     /* background: radial-gradient(circle, rgba(148,187,233,0.7175245098039216) 0%, rgba(148,187,233,1) 100%); */

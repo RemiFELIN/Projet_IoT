@@ -8,6 +8,12 @@ var CryptoJS = require("crypto-js");
 
 var app = express();
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -30,9 +36,9 @@ const TOPIC_LUMIERE = 'myhouse/lumiere'
 const TOPIC_GAZ = 'myhouse/gaz'
 const TOPIC_TEMP = 'myhouse/temp'
 
-var client  = mqtt.connect(mqtt_url,{
-  username: 'try',
-  password: 'try'
+var client = mqtt.connect(mqtt_url, {
+    username: 'try',
+    password: 'try'
 });
 
 // Connexion au topic
@@ -136,15 +142,15 @@ function getList() {
 }
 
 function addCapteur(capteur) {
-  list.push(capteur);
+    list.push(capteur);
 }
 
 function removeCapteur(capteur) {
-  list.forEach(element => {
-    if(element.who == capteur.who) {
-      list = list.filter(el => el != element);
-    }
-  });
+    list.forEach(element => {
+        if (element.who == capteur.who) {
+            list = list.filter(el => el != element);
+        }
+    });
 }
 
 function updateValue(capteur) {
@@ -157,40 +163,41 @@ function updateValue(capteur) {
 }
 
 function ifExist(capteur) {
-  list.forEach(element => {
-    if(element.who == capteur.who) {
-      return true
-    }
-  });
-  return false
+    list.forEach(element => {
+        if (element.who == capteur.who) {
+            return true
+        }
+    });
+    return false
 }
 
 app.get('/remove/:mac', function(req, res) {
-  toRemove = req.params.mac
-  console.log(toRemove)
-  removeCapteur(toRemove)
-  console.log(list)
-  res.send(200)
+    toRemove = req.params.mac
+    console.log(toRemove)
+    removeCapteur(toRemove)
+    console.log(list)
+    res.send(200)
 });
 
 app.get('/add/:mac', function(req, res) {
-  toAdd = req.params.mac
-  console.log(toAdd)
-  addCapteur(toAdd)
-  console.log(toAdd)
-  res.send(200)
+    toAdd = req.params.mac
+    console.log(toAdd)
+    addCapteur(toAdd)
+    console.log(toAdd)
+    res.send(200)
 })
 
 app.get('/exist/:mac', function(req, res) {
-  if(ifExist(req.params.mac)) {
-    res.status(200).send('true');
-  } else {
-    res.status(200).send('false');
-  }
+    console.log(req.params.mac)
+    if (ifExist(req.params.mac)) {
+        res.status(200).send('true');
+    } else {
+        res.status(200).send('false');
+    }
 })
 
 app.get('/listeCapteurs/:msg', function(req, res) {
-    res.send(getMessageFromObject(req.params.msg))
+    res.send(list);
     //http://localhost:3000/listeCapteurs/U2FsdGVkX1+pBMjv9psDPLaiwCNQX0ROlSJB5r9KFn01pQIv9oXGENfE1+DDb7BhYT3FBQeYywcWjE0jZ5Z9KA==
 });
 

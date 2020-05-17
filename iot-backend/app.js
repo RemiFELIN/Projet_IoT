@@ -70,20 +70,74 @@ function getMessageFromObject(data) {
     var bytes = CryptoJS.AES.decrypt(data, 'projet_miagestic')
     var originalText = bytes.toString(CryptoJS.enc.Utf8)
         // Qui l'a envoyé ? Qu'est ce qu'il a envoyé ?
-        // Structure de 'data' : [Adresse MAC];[Value]
+        // Structure de 'data' : [Adresse MAC];[Value];[Type]
         // On récupère son adresse MAC
     const mac = originalText.substring(0, 17)
-        // et le message
+        // le message
     const value = originalText.slice(18)
         // On le met dans un objet JSON
     var obj = new Object();
     obj.mac = mac;
     obj.value = value;
     var jsonString = JSON.stringify(obj);
-    var res = [];
-    res.push(jsonString);
-    return jsonString;
+    return jsonString
 }
+
+var list = [{ who: "5E:FF:56:A2:AF:15", value: 1, type: "Capteur senseur" },
+    { who: "5E:FF:56:A2:AF:41", value: 5, type: "Capteur mouvement" },
+    { who: "5E:FF:56:A2:AF:10", value: 50, type: "Microphone" },
+    { who: "5E:FF:56:A1:AF:15", value: 11, type: "Capteur thermique" },
+    { who: "5E:FF:01:A2:AF:15", value: 100, type: "Capteur lumiere" }
+]
+
+function getList() {
+    return list;
+}
+
+function addCapteur(capteur) {
+    list.push(capteur);
+}
+
+function removeCapteur(capteur) {
+    list.forEach(element => {
+        if (element.who == capteur.who) {
+            list = list.filter(el => el != element);
+        }
+    });
+}
+
+function ifExist(capteur) {
+    list.forEach(element => {
+        if (element.who == capteur.who) {
+            return true
+        }
+    });
+    return false
+}
+
+app.get('/remove/:mac', function(req, res) {
+    toRemove = req.params.mac
+    console.log(toRemove)
+    removeCapteur(toRemove)
+    console.log(list)
+    res.send(200)
+});
+
+app.get('/add/:mac', function(req, res) {
+    toAdd = req.params.mac
+    console.log(toAdd)
+    addCapteur(toAdd)
+    console.log(toAdd)
+    res.send(200)
+})
+
+app.get('/exist/:mac', function(req, res) {
+    if (ifExist(req.params.mac)) {
+        res.status(200).send('true');
+    } else {
+        res.status(200).send('false');
+    }
+})
 
 app.get('/listeCapteurs/:msg', function(req, res) {
     res.send(getMessageFromObject(req.params.msg))

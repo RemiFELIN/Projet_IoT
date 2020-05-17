@@ -6,14 +6,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CapteursComponent } from './capteurs/capteurs.component';
 import { GraphComponent } from './graph/graph.component';
 import { HttpClientModule }    from '@angular/common/http';
-import { AdministrateurComponent } from './administrateur/administrateur.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CapteursComponent,
     GraphComponent,
-    AdministrateurComponent,
   ],
   imports: [
     BrowserModule,

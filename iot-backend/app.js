@@ -157,7 +157,7 @@ function addCapteur(capteur) {
 
 function removeCapteur(capteur) {
     list.forEach(element => {
-        if (element.who == capteur.who) {
+        if (element.who == capteur) {
             list = list.filter(el => el != element);
         }
     });

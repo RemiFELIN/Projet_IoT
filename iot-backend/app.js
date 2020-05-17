@@ -2,9 +2,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var CryptoJS = require("crypto-js");
 
 var app = express();
 
@@ -23,7 +23,6 @@ var path = require('path');
 const mqtt = require('mqtt')
 
 const mqtt_url = 'http://broker.hivemq.com'
-// Les topics :
 const TOPIC_BRUIT = 'myhouse/bruit'
 const TOPIC_MOUVEMENT = 'myhouse/mouvement'
 
@@ -36,45 +35,51 @@ var client  = mqtt.connect(mqtt_url,{
 client.on('connect', function () {
 	client.subscribe(TOPIC_BRUIT, function (err) {
 		if (!err) {
-			//client.publish(TOPIC_BRUIT, 'Hello mqtt')
 			console.log('Node Server has subscribed to ', TOPIC_BRUIT);
 		}
 	})
 	client.subscribe(TOPIC_MOUVEMENT, function (err) {
 		if (!err) {
-			//client.publish(TOPIC_MOUVEMENT, 'Hello mqtt')
 			console.log('Node Server has subscribed to ', TOPIC_MOUVEMENT);
 		}
 	})
 });
 
-/*client.on('message', function (topic, message) {
-	console.log("MQTT msg on topic : ", topic.toString());
-	console.log("Msg payload : ", message.toString());
-	//{who: 30:AE:A4:8F:3D:20, value: ping off}
-	console.log(message.toString());
+/************************************************** */
+/* SECURITE : Algo SHA256 -> décryptage             */
+/************************************************** */
 
-	try{
-		message = JSON.parse(message);
-		wh = message.who
-		val = message.value
-		if(topic == 'sensors/ping'){
-			io.emit('pingOff', {
-				who: wh,
-				value: val
-			});
-        }
-	}
-	catch(error){
-		//console.log(error)
-		//throw error
-	}
-				
-});*/
+function testSHA256() {
+    var ciphertext = CryptoJS.AES.encrypt('5E:FF:56:A2:AF:15;toto titi tutu', 'projet_miagestic').toString();
+    console.log('Voici la data: ' + ciphertext)
+    // Decrypt
+    var bytes  = CryptoJS.AES.decrypt(ciphertext, 'projet_miagestic');
+    var originalText = bytes.toString(CryptoJS.enc.Utf8)
+    console.log('Voici la data: ' + originalText) // 'my message'
+}
 
-app.get('/toto', function (req, res) {
-    req.send('ouig');
-});
+// Pour le front !
+function getMessageFromObject(data) {
+    // Tout d'abord, on décode le message avec notre clé publique
+    var bytes  = CryptoJS.AES.decrypt(data, 'projet_miagestic')
+    var originalText = bytes.toString(CryptoJS.enc.Utf8)
+    // Qui l'a envoyé ? Qu'est ce qu'il a envoyé ?
+    // Structure de 'data' : [Adresse MAC];[Value]
+    // On récupère son adresse MAC
+    const mac = originalText.substring(0,17)
+    // et le message
+    const value = originalText.slice(18)
+    // On le met dans un objet JSON
+    var obj = new Object();
+    obj.mac = mac;
+    obj.value  = value;
+    var jsonString= JSON.stringify(obj);
+    console.log(jsonString)
+}
+
+// test : afin de tester les méthodes
+testSHA256()
+getMessageFromObject(CryptoJS.AES.encrypt('5E:FF:56:A2:AF:15;toto titi tutu', 'projet_miagestic').toString())
 
 module.exports = app;
 

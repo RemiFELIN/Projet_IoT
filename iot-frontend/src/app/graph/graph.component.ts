@@ -12,7 +12,16 @@ import { Capteur } from '../capteurs';
 export class GraphComponent implements OnInit {
 
   subscription: Subscription;
-  capteurs: Capteur[];
+  capteurs: Capteur[] = [{type: "Microphone", text: {
+    danger: "Alerte un bruit virulant a été detecté",
+    warning: "Un léger bruit a été detecté",
+    success: "Votre maison est calme, aucun bruit detecté",
+},
+src: {
+    danger: "../../assets/noise.svg",
+    warning: "../../assets/warning.svg",
+    success: "../../assets/safe.svg",
+},who:"oui"}];
   arrayOfCanvas: HTMLElement[];
 
   constructor(private capteurService: GetCapteursService) { 
@@ -24,7 +33,7 @@ export class GraphComponent implements OnInit {
     // this.capteurs.forEach(capteur => {
     //   this.arrayOfCanvas.push(document.createElement("canvas"));
     // });
-    var ctx = document.getElementById('graph');
+    var ctx = document.getElementById('oui');
     var myChart = new Chart(ctx, {
       type: 'line',
       data: {

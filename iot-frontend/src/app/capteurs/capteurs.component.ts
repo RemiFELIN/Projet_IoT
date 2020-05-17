@@ -20,13 +20,14 @@ export class CapteursComponent {
   ip:string;
   capteur: Capteur;
   capteurs: Capteur[];
-  data: Capteur[];
 
 
   constructor(private capteurService: GetCapteursService) { 
     this.capteurs = capteurs;
     this.subscription = this.capteurService.getCapteurs()
-    .subscribe(capteurs => this.data = capteurs);
+    .subscribe(capteurs => {
+      console.log(capteurs)
+      this.listOfCapteur = capteurs});
     this.capteurService.requestCapteurs();
   }
 

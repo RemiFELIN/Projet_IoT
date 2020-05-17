@@ -1,11 +1,10 @@
 <div class="input-group">
     <input type="text" class="form-control" placeholder="Adresse IP" [(ngModel)]="ip" aria-describedby="basic-addon2">
     <select class="custom-select" id="inputGroupSelect04" [(ngModel)]="selectedValue">
-      <option selected disabeld>Choissisez...</option>
       <option *ngFor="let capt of capteurs"[ngValue]="capt">{{capt.type}}</option>
     </select>
     <div class="input-group-append">
-        <button class="btn btn-primary" type="button" (click)="addCapteur()">ajouter</button>
+        <button class="btn btn-primary" type="button" (click)="addCapteur()" [disabled]="ip == null || selectedValue == null">ajouter</button>
     </div>
 </div>
 

@@ -32,7 +32,7 @@ export class CapteursComponent {
     this.subscription = this.capteurService.getCapteurs()
       .subscribe(cap => {
         var tmp = this.addProperties(cap);
-        if(this.listOfCapteur.length >0){
+        if(this.listOfCapteur.length == tmp.length){
           for (let index = 0; index < this.listOfCapteur.length; index++) {
             for (let jndex = 0; jndex < tmp.length; jndex++) {
               if(tmp[jndex].who == this.listOfCapteur[index].who){
@@ -47,7 +47,6 @@ export class CapteursComponent {
         else{
           this.listOfCapteur = tmp;
         }
-        console.log(this.listOfCapteur)
       });
     this.capteurService.requestCapteurs();
   }

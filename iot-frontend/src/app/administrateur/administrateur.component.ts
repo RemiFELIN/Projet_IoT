@@ -14,17 +14,20 @@ export class AdministrateurComponent implements OnInit {
   public suppCapteur: any;
   public capteurs: any;
   public subscription: any;
+  public listOfCapteur: Array<Capteur> = new Array<Capteur>();
 
   constructor( private capteurService: GetCapteursService) {
-    this.capteur = null;
-    this.adresseMac = null;
     this.suppCapteur = null;
-    this.capteurs = [];
+    this.subscription = this.capteurService.getCapteurs()
+      .subscribe(cap => {
+        this.capteurs = cap;
+      });
    }
 
   ngOnInit(): void {
-    this.subscription = this.capteurService.getCapteurs().subscribe(capteurs => this.capteurs = capteurs)
+   
   }
+
 
   supprimer(){
     this.capteurService.supprimer(this.suppCapteur.mac);

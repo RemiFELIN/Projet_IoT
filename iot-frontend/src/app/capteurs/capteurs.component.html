@@ -11,6 +11,14 @@
         <button class="btn btn-primary" type="button" (click)="addCapteur()" [disabled]="ip == null || selectedValue == null">Ajouter</button>
     </div>
 </div>
+<div class="input-group" *ngIf="radioButton">
+    <select class="custom-select" id="inputGroupSelect04" [(ngModel)]="suppCapteur">
+      <option *ngFor="let ca of capteurs"[ngValue]="ca.who">{{ca.who}}</option>
+    </select>
+    <div class="input-group-append">
+        <button class="btn btn-warning" type="button" (click)="supprimer()" [disabled]="suppCapteur == null">Supprimer</button>
+    </div>
+</div>
 
 <ul class="list-group" *ngFor="let capteur of listOfCapteur">
 

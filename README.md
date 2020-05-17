@@ -31,26 +31,13 @@ Plus d'instructions dans les dossiers *iot-backend* et *iot-frontend* (readme)
 
   
 
-## Test du projet
+## Notre projet
 
-  
+Notre projet consiste à un système de maison sécurisé. Notre maison possède des capteurs (capteur de mouvement, capteur de gaz, microphone, capteur de température et capteur de luminosité).
 
-Vous devez aller sur l'adresse : [Simulation requête MQTT](http://www.hivemq.com/demos/websocket-client/)
-Cliquer sur CONNECTION puis connect. 
+Notre client possède une vue administrateur ou il peut ajouter et supprimer des capteurs et une vue controleur afin de pouvoir déléguer la surveillance de sa maison. Il visualise en temps réel les données des capteurs de sa maison. 
 
-Ouvrez l'onglet publish et modifier le topic par myhouse/bruit ou myhouse/mouvement.
+Les envoies des données devaient se faire sous format TLS/SSL mais l'obtention d'un certificat par une autorité étant payante. Nous avons donc crypter nos données au lieu de la couche transport en utilisant une fonction de hachage couplé à un salage (SHA256). Tout ces concepts sont expliqués dans notre document.
 
-Pour envoyez un message :
-Entrez un message tel que : {who: "5E:FF:56:A2:AF:15", value: 1, type: "Capteur senseur"}
-
-Choisissez un type de capteur parmis : 
-Microphone
-Capteur senseur
-Capteur mouvement
-Capteur thermique
-Capteur lumiere
-
-Convertissez votre message en utilisant : [sha256 converter](https://emn178.github.io/online-tools/sha256.html)
-
-Cliquez sur le bouton publish.
+Afin de palier aux manques des capteurs nous avons créer une simulation des capteurs avec des données.
 

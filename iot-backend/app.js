@@ -19,7 +19,6 @@ app.use('/users', usersRouter);
 
 // Importation des modules
 var path = require('path');
-const socketio = require('socket.io');
 
 const mqtt = require('mqtt')
 

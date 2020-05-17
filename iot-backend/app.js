@@ -217,10 +217,6 @@ app.get('/listeCapteurs/:msg', function(req, res) {
     //http://localhost:3000/listeCapteurs/U2FsdGVkX1+pBMjv9psDPLaiwCNQX0ROlSJB5r9KFn01pQIv9oXGENfE1+DDb7BhYT3FBQeYywcWjE0jZ5Z9KA==
 });
 
-// test : afin de tester les méthodes
-testSHA256()
-getMessageFromObject(CryptoJS.AES.encrypt('5E:FF:56:A2:AF:15;1;Capteur lumiere', 'miagestic').toString())
-
 module.exports = app;
 
 // Le moyen de fournir les données avec la solution SSL/TLS (Source: hivemq.com)

@@ -1,0 +1,33 @@
+<div class="radio-button-wrapper">
+    <div class="btn-group btn-group-toggle center-top" ngbRadioGroup name="radioBasic" [(ngModel)]="radioButton">
+        <label ngbButtonLabel class="btn-primary">
+            <input ngbButton type="radio" [value]="true"> Administrateur
+        </label>
+        <label ngbButtonLabel class="btn-primary">
+            <input ngbButton type="radio" [value]="false"> Contrôleur
+        </label>
+    </div>
+</div>
+
+
+
+<div style="margin:1%;">
+    <div class="row">
+        <div class="col-4">
+            <app-capteurs></app-capteurs>
+        </div>
+        <div class="col-4">
+        </div>
+    </div>
+    <div class="row" style="margin-top: 2%;">
+        <div class="col">
+            <app-graph-son></app-graph-son>
+        </div>
+        <div class="col">
+            <app-graph-mouvement></app-graph-mouvement>
+        </div>
+        <div class="col">
+            <app-graph-gaz></app-graph-gaz>
+        </div>
+    </div>
+</div>

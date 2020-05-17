@@ -1,0 +1,42 @@
+<ul class="list-group">
+
+    <li *ngIf="gaz == 2" class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+        Alerte un gaz a été détecté
+        <img src="../../assets/death.svg" class="icon">
+    </li>
+    <li *ngIf="gaz == 1" class="list-group-item d-flex justify-content-between align-items-center list-group-item-warning">
+        Niveau de gaz inquiétant
+        <img src="../../assets/warning.svg" class="icon">
+    </li>
+    <li *ngIf="gaz == 0" class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+        Tout va bien, aucun gaz detecté
+        <img src="../../assets/safe.svg" class="icon">
+    </li>
+
+    <li *ngIf="mouvement == 2" class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+        Alerte une présence a été détecté
+        <img src="../../assets/thief.svg" class="icon">
+    </li>
+    <li *ngIf="mouvement == 1" class="list-group-item d-flex justify-content-between align-items-center list-group-item-warning">
+        Un mouvement a été detecté chez vous
+        <img src="../../assets/warning.svg" class="icon">
+    </li>
+    <li *ngIf="mouvement == 0" class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+        Aucun mouvement detecté chez vous
+        <img src="../../assets/safe.svg" class="icon">
+    </li>
+
+    <li *ngIf="bruit == 2" class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+        Alerte un bruit virulant a été detecté
+        <img src="../../assets/noise.svg" class="icon">
+    </li>
+    <li *ngIf="bruit == 1" class="list-group-item d-flex justify-content-between align-items-center list-group-item-warning">
+        Un léger bruit a été detecté
+        <img src="../../assets/warning.svg" class="icon">
+    </li>
+    <li *ngIf="bruit == 0" class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+        Votre maison est calme, aucun bruit detecté
+        <img src="../../assets/safe.svg" class="icon">
+    </li>
+
+</ul>

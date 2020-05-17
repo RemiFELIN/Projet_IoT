@@ -24,14 +24,10 @@ export class AdministrateurComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscription = this.capteurService.getCapteurs().subscribe(capteurs => this.capteurs = capteurs)
-  }
-
-  save(){
-    // this.capteurService.ajouter(obj);
-
+    console.log(this.capteurs);
   }
 
   supprimer(){
-    // this.capteurService.supprimer(obj);
+    this.capteurService.supprimer(this.suppCapteur.mac);
   }
 }

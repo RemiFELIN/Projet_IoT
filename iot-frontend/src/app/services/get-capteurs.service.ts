@@ -26,17 +26,9 @@ export class GetCapteursService {
     this.http.get(url).subscribe(res => console.log(res));
   }
 
-  ajouter(capteur: Capteur){
-    const headers = new HttpHeaders().set('Content-type', 'application/json');
-    let params = new HttpParams();
-    let body ='ajoutCapteur=' + JSON.stringify(capteur);
-    // this.http.post(this.url, body, { headers, params, withCredentials: true})
-  }
+  supprimer(mac: string){
+    const url: string ='http://localhost:3000/remove/' + mac;
+    this.http.get(url).subscribe(res => console.log(res));
 
-  supprimer(capteur: Capteur): void{
-    const headers = new HttpHeaders().set('Content-type', 'application/json');
-    let params = new HttpParams();
-    let body ='suppCapteur=' + JSON.stringify(capteur);
-    // this.http.post(this.url, body, { headers, params, withCredentials: true})
   }
 }

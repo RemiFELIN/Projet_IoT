@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { Capteur } from '../capteurs';
 import { capteurs } from '../mock-capteurs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import Chart from 'chart.js';
+
 @Component({
   selector: 'app-capteurs',
   templateUrl: './capteurs.component.html',
@@ -41,8 +43,37 @@ export class CapteursComponent {
     this.capteurService.requestCapteurs();
   }
 
-  openModal(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
+  openModal(content,capt : Capteur) {
+    this.modalService.open(content, {size:'xl'});
+    var ctx = document.getElementById("graph");
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['-60s', '-50s', '-40s', '-30s', '-20s', '-10s', 'Maintenant'],
+        datasets: [{
+          label: capt.type,
+          data: capt.value ? capt.value : [1,2,2,2,1,2,1],
+          backgroundColor: [
+            'rgba(147,112,219,0.2)',
+          ],
+          borderColor: [
+            'rgba(147,112,219,1)',
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true,
+              suggestedMax: 100
+            }
+
+          }]
+        }
+      }
+    });
   }
 
   isNotInListOfCapteur(c: Capteur) {

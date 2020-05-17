@@ -57,11 +57,9 @@ client.on('connect', function() {
 
 function testSHA256() {
     var ciphertext = CryptoJS.AES.encrypt('5E:FF:56:A2:AF:15;toto titi tutu', 'projet_miagestic').toString();
-    console.log('Voici la data: ' + ciphertext)
-        // Decrypt
+    // Decrypt
     var bytes = CryptoJS.AES.decrypt(ciphertext, 'projet_miagestic');
     var originalText = bytes.toString(CryptoJS.enc.Utf8)
-    console.log('Voici la data: ' + originalText) // 'my message'
 }
 
 // Pour le front !
@@ -84,8 +82,8 @@ function getMessageFromObject(data) {
 }
 
 var list = [{ who: "5E:FF:56:A2:AF:15", value: 1, type: "Capteur senseur" },
-    { who: "5E:FF:56:A2:AF:41", value: 5, type: "Capteur mouvement" },
-    { who: "5E:FF:56:A2:AF:10", value: 50, type: "Microphone" },
+    { who: "5E:FF:56:A2:AF:41", value: 0, type: "Capteur mouvement" },
+    { who: "5E:FF:56:A2:AF:10", value: 0.5, type: "Microphone" },
     { who: "5E:FF:56:A1:AF:15", value: 11, type: "Capteur thermique" },
     { who: "5E:FF:01:A2:AF:15", value: 100, type: "Capteur lumiere" }
 ]
@@ -132,6 +130,7 @@ app.get('/add/:mac', function(req, res) {
 })
 
 app.get('/exist/:mac', function(req, res) {
+    console.log(req.params.mac)
     if (ifExist(req.params.mac)) {
         res.status(200).send('true');
     } else {
@@ -140,8 +139,8 @@ app.get('/exist/:mac', function(req, res) {
 })
 
 app.get('/listeCapteurs/:msg', function(req, res) {
-    res.send(getMessageFromObject(req.params.msg))
-        //http://localhost:3000/listeCapteurs/U2FsdGVkX1+pBMjv9psDPLaiwCNQX0ROlSJB5r9KFn01pQIv9oXGENfE1+DDb7BhYT3FBQeYywcWjE0jZ5Z9KA==
+    res.send(list);
+    //http://localhost:3000/listeCapteurs/U2FsdGVkX1+pBMjv9psDPLaiwCNQX0ROlSJB5r9KFn01pQIv9oXGENfE1+DDb7BhYT3FBQeYywcWjE0jZ5Z9KA==
 });
 
 // test : afin de tester les méthodes

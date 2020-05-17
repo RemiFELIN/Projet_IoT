@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { Capteur } from '../capteurs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root'

@@ -7,16 +7,16 @@ import { Capteur } from '../capteurs';
 })
 export class GetCapteursService {
 
-  private capteurs = new Subject<Capteur>();
+  private capteurs = new Subject<Capteur[]>();
 
   constructor() { 
   }
 
-  getCapteurs(): Observable<Capteur>{
+  getCapteurs(): Observable<Capteur[]>{
     return this.capteurs.asObservable();
   }
 
-  updateCapteurs(capteurs: Capteur): void{
+  updateCapteurs(capteurs: Capteur[]): void{
     this.capteurs.next(capteurs);
   }
   

@@ -5,22 +5,26 @@ import { Subscription } from 'rxjs';
 import { Capteur } from '../capteurs';
 
 @Component({
-  selector: 'app-graph-gaz',
-  templateUrl: './graph-gaz.component.html',
-  styleUrls: ['./graph-gaz.component.css']
+  selector: 'app-graph',
+  templateUrl: './graph.component.html',
+  styleUrls: ['./graph.component.css']
 })
-export class GraphGazComponent implements OnInit {
+export class GraphComponent implements OnInit {
 
   subscription: Subscription;
-  capteurs: Capteur;
+  capteurs: Capteur[];
+  arrayOfCanvas: HTMLElement[];
 
   constructor(private capteurService: GetCapteursService) { 
-    this.subscription = this.capteurService.getCapteurs()
-    .subscribe(capteurs => this.capteurs = capteurs)
   }
 
   ngOnInit(): void {
-    var ctx = document.getElementById('graphGaz');
+    // this.subscription = this.capteurService.getCapteurs()
+    // .subscribe(capteurs => this.capteurs = capteurs);
+    // this.capteurs.forEach(capteur => {
+    //   this.arrayOfCanvas.push(document.createElement("canvas"));
+    // });
+    var ctx = document.getElementById('graph');
     var myChart = new Chart(ctx, {
       type: 'line',
       data: {

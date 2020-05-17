@@ -101,7 +101,15 @@ var list = [{ who: "5E:FF:56:A2:AF:15", value: [0, 1, 0, 1, 0, 0, 0], type: "Cap
     { who: "5E:FF:01:A2:AF:15", value: [100, 51, 50, 1, 0, 44, 1], type: "Capteur lumiere" }
 ]
 
+function simulation() {
+    var i = 0
+        //   while(i<500) {
+        //     var randValue = {who: "E"+ }
+        //   }
+}
+
 function testSHA256() {
+    // Encrypt
     var ciphertext = CryptoJS.AES.encrypt('5E:FF:56:A2:AF:15;toto titi tutu', 'miagestic').toString();
     console.log('[testSHA256] Voici la data: ' + ciphertext)
         // Decrypt
@@ -158,19 +166,19 @@ function removeCapteur(capteur) {
 function updateValue(capteur) {
     list.forEach(element => {
         if (element.who == capteur.who) {
-            removeCapteur(element)
-            addCapteur(element)
+            element.value.push(capteur.value)
         }
     });
 }
 
 function ifExist(capteur) {
+    var res = false
     list.forEach(element => {
         if (element.who == capteur.who) {
-            return true
+            res = true
         }
     });
-    return false
+    return res
 }
 
 app.get('/remove/:mac', function(req, res) {

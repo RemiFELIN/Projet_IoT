@@ -35,11 +35,9 @@ export class GetCapteursService {
     }
 
 
-  ajouter(capteur: Capteur) {
-    const headers = new HttpHeaders().set('Content-type', 'application/json');
-    let params = new HttpParams();
-    let body = 'ajoutCapteur=' + JSON.stringify(capteur);
-    // this.http.post(this.url, body, { headers, params, withCredentials: true})
+  ajouter(mac: string) {
+    const url: string ='http://localhost:3000/add/' + mac;
+    this.http.get(url).subscribe(res => console.log(res));
   }
 
 

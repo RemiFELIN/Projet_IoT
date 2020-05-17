@@ -11,6 +11,7 @@ export class Capteur {
         success:string
     };
     who?:string;
-    value?:number[];
+    value?:number;
+    values?:number[];
     etat?:number;
 }

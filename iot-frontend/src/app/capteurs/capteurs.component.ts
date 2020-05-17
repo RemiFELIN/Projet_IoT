@@ -30,7 +30,22 @@ export class CapteursComponent {
     this.capteurs = capteurs;
     this.subscription = this.capteurService.getCapteurs()
       .subscribe(cap => {
-        this.listOfCapteur = this.addProperties(cap);
+        var tmp = this.addProperties(cap);
+        if(this.listOfCapteur.length >0){
+          for (let index = 0; index < this.listOfCapteur.length; index++) {
+            for (let jndex = 0; jndex < tmp.length; jndex++) {
+              if(tmp[jndex].who == this.listOfCapteur[index].who){
+                if(this.listOfCapteur[index].values)
+                  this.listOfCapteur[index].values.push(tmp[jndex].value)
+                else
+                  this.listOfCapteur[index].values = [tmp[jndex].value];
+              }
+            }            
+          }
+        }
+        else{
+          this.listOfCapteur = tmp;
+        }
         console.log(this.listOfCapteur)
       });
     this.capteurService.requestCapteurs();
@@ -44,7 +59,6 @@ export class CapteursComponent {
           var tmp = cap;
           tmp.who = ca.who;
           tmp.value =  ca.value;
-          console.log(ca.value)
           res.push(tmp)
         }
       })
@@ -61,7 +75,7 @@ export class CapteursComponent {
         labels: ['-60s', '-50s', '-40s', '-30s', '-20s', '-10s', 'Maintenant'],
         datasets: [{
           label: capt.type,
-          data: capt.value ,
+          data: capt.values ,
           backgroundColor: [
             'rgba(147,112,219,0.2)',
           ],

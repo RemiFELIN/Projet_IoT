@@ -94,11 +94,11 @@ client.on('message', function(topic, message) {
 /************************************************** */
 /* SECURITE : Algo SHA256 -> décryptage             */
 /************************************************** */
-var list = [{ who: "5E:FF:56:A2:AF:15", value: [0, 1, 0, 1, 0, 0, 0], type: "Capteur senseur" },
-    { who: "5E:FF:56:A2:AF:41", value: [31, 31, 30, 31, 30, 30, 31], type: "Capteur mouvement" },
-    { who: "5E:FF:56:A2:AF:10", value: [1, 1, 0, 1, 0, 0, 1], type: "Microphone" },
-    { who: "5E:FF:56:A1:AF:15", value: [10, 100, 80, 81, 90, 70, 81], type: "Capteur thermique" },
-    { who: "5E:FF:01:A2:AF:15", value: [100, 51, 50, 1, 0, 44, 1], type: "Capteur lumiere" }
+var list = [{ who: "5E:FF:56:A2:AF:15", value: 0, type: "Capteur senseur" },
+    { who: "5E:FF:56:A2:AF:41", value: 31, type: "Capteur mouvement" },
+    { who: "5E:FF:56:A2:AF:10", value: 1, type: "Microphone" },
+    { who: "5E:FF:56:A1:AF:15", value: 10, type: "Capteur thermique" },
+    { who: "5E:FF:01:A2:AF:15", value: 100, type: "Capteur lumiere" }
 ]
 
 function simulation() {
@@ -174,7 +174,7 @@ function updateValue(capteur) {
 function ifExist(capteur) {
     var res = false
     list.forEach(element => {
-        if (element.who == capteur.who) {
+        if (element.who == capteur) {
             res = true
         }
     });

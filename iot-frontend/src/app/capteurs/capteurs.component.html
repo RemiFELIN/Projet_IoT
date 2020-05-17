@@ -1,5 +1,30 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <label for="dateOfBirth">Date of birth</label>
+                <div class="input-group">
+                    <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>
+
 <div class="input-group">
-    <input type="text" class="form-control" placeholder="Adresse IP" [(ngModel)]="ip" aria-describedby="basic-addon2">
+    <input type="text" class="form-control" placeholder="Adresse MAC" [(ngModel)]="ip" aria-describedby="basic-addon2">
     <select class="custom-select" id="inputGroupSelect04" [(ngModel)]="selectedValue">
       <option *ngFor="let capt of capteurs"[ngValue]="capt">{{capt.type}}</option>
     </select>
@@ -10,18 +35,18 @@
 
 <ul class="list-group" *ngFor="let capteur of listOfCapteur">
 
-    <li *ngIf="capteur.etat == 2" class="list-group-item d-flex justify-content-between align-items-center list-group-item-success'">
-        <b>{{capteur.ip}}</b>{{capteur.text.success}}
+    <li (click)="openModal(content)" style="cursor: pointer;" *ngIf="capteur.value > 2" class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+        <b>{{capteur.who}}</b>{{capteur.text.success}}
         <img [src]="capteur.src.success" class="icon">
     </li>
 
-    <li *ngIf="capteur.etat == 1" class="list-group-item d-flex justify-content-between align-items-center list-group-item-warning'">
-        <b>{{capteur.ip}}</b>{{capteur.text.warning}}
+    <li (click)="openModal(content)" style="cursor: pointer;" *ngIf="capteur.value == 1 && capteur.text.warning" class="list-group-item d-flex justify-content-between align-items-center list-group-item-warning">
+        <b>{{capteur.who}}</b>{{capteur.text.warning}}
         <img [src]="capteur.src.warning" class="icon">
     </li>
 
-    <li *ngIf="capteur.etat == 0" class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger'">
-        <b>{{capteur.ip}}</b>{{capteur.text.danger}}
+    <li (click)="openModal(content)" style="cursor: pointer;" *ngIf="capteur.value < 1" class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+        <b>{{capteur.who}}</b>{{capteur.text.danger}}
         <img [src]="capteur.src.danger" class="icon">
     </li>
 

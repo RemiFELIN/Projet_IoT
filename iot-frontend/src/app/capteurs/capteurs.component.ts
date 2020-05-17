@@ -3,6 +3,7 @@ import { GetCapteursService } from '../services/get-capteurs.service';
 import { Subscription } from 'rxjs';
 import { Capteur } from '../capteurs';
 import { capteurs } from '../mock-capteurs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-capteurs',
   templateUrl: './capteurs.component.html',
@@ -17,30 +18,59 @@ export class CapteursComponent {
   subscription: Subscription;
   listOfCapteur: Array<Capteur> = new Array<Capteur>();
   selectedValue: Capteur;
-  ip:string;
+  ip: string;
   capteur: Capteur;
   capteurs: Capteur[];
 
 
-  constructor(private capteurService: GetCapteursService) { 
+  constructor(private capteurService: GetCapteursService,private modalService: NgbModal) {
     this.capteurs = capteurs;
     this.subscription = this.capteurService.getCapteurs()
-    .subscribe(capteurs => {
-      console.log(capteurs)
-      this.listOfCapteur = capteurs});
+      .subscribe(cap => {
+        capteurs.forEach(c => {
+          cap.forEach(cs => {
+            if (c.type == cs.type && this.isNotInListOfCapteur(c)) {
+              const cap = c;
+              cap.who = cs.who;
+              cap.value = cs.value;
+              this.listOfCapteur.push(cap);
+            }
+          })
+        })
+      });
     this.capteurService.requestCapteurs();
   }
 
-  addCapteur(){
-    alert("Aucun object connecté avec cette adresse IP");
-    capteurs.forEach(c =>{
-      if(c.type == this.selectedValue.type){
-        const cap = c;
-        cap.who = this.ip;
-        this.listOfCapteur.push(c);
+  openModal(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
+  }
+
+  isNotInListOfCapteur(c: Capteur) {
+    let res = true;
+    this.listOfCapteur.forEach(cap => {
+      if (c.type == cap.type) {
+        res = false;
       }
     })
-    this.capteurService.updateCapteurs(this.listOfCapteur);
+    return res;
+  }
+
+ async addCapteur() {
+    const capteurExist = await this.capteurService.checkIfExist(this.ip);
+    if(capteurExist){
+      capteurs.forEach(c => {
+        if (c.type == this.selectedValue.type) {
+          const cap = c;
+          cap.who = this.ip;
+          this.listOfCapteur.push(c);
+        }
+      })
+      this.capteurService.updateCapteurs(this.listOfCapteur);
+    }
+    else{
+      alert("Aucun object connecté avec cette adresse IP");
+    }
+
   }
 
 }

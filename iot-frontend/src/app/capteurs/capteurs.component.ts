@@ -24,6 +24,7 @@ export class CapteursComponent {
   capteur: Capteur;
   capteurs: Capteur[];
   @Input() radioButton: boolean;
+  suppCapteur: string;
 
 
   constructor(private capteurService: GetCapteursService, private modalService: NgbModal) {
@@ -111,6 +112,10 @@ export class CapteursComponent {
       alert("Aucun object connecté avec cette adresse IP");
     }
 
+  }
+
+  supprimer(){
+    this.capteurService.supprimer(this.suppCapteur);
   }
 
 }

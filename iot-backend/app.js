@@ -102,10 +102,21 @@ var list = [{ who: "5E:FF:56:A2:AF:15", value: 0, type: "Capteur senseur" },
 ]
 
 function simulation() {
-    var i = 0
-        //   while(i<500) {
-        //     var randValue = {who: "E"+ }
-        //   }
+  setInterval(() => {
+    var list = [{who: "5E:FF:56:A2:AF:15", value: Math.random() * 100, type: "Capteur senseur"}, 
+                {who: "5E:FF:56:A2:AF:41", value: Math.random() * 100, type: "Capteur mouvement"}, 
+                {who: "5E:FF:56:A2:AF:10", value: Math.random() * 100, type: "Microphone"}, 
+                {who: "5E:FF:56:A1:AF:15", value: Math.random() * 100, type: "Capteur thermique"}, 
+                {who: "5E:FF:01:A2:AF:15", value: Math.random() * 100, type: "Capteur lumiere"}]
+    list.forEach(element => {
+      var res = getMessageFromObject(element)
+      if(ifExist(res)) {
+        updateValue(res)
+      } else {
+        addCapteur(res)
+      } 
+    });
+  }, 10000);
 }
 
 function testSHA256() {
@@ -157,7 +168,7 @@ function addCapteur(capteur) {
 
 function removeCapteur(capteur) {
     list.forEach(element => {
-        if (element.who == capteur.who) {
+        if (element.who == capteur) {
             list = list.filter(el => el != element);
         }
     });

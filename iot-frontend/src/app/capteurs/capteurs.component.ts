@@ -31,6 +31,7 @@ export class CapteursComponent {
     this.subscription = this.capteurService.getCapteurs()
       .subscribe(cap => {
         this.listOfCapteur = this.addProperties(cap);
+        console.log(this.listOfCapteur)
       });
     this.capteurService.requestCapteurs();
   }

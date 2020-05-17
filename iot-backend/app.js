@@ -42,70 +42,70 @@ var client = mqtt.connect(mqtt_url, {
 });
 
 // Connexion au topic
-client.on('connect', function () {
-	client.subscribe(TOPIC_MICRO, function (err) {
-		if (!err) {
-			console.log('Node Server has subscribed to ', TOPIC_MICRO);
-		}
-  })
-  client.subscribe(TOPIC_MOUVEMENT, function (err) {
-		if (!err) {
-			console.log('Node Server has subscribed to ', TOPIC_MOUVEMENT);
-		}
-  })
-  client.subscribe(TOPIC_LUMIERE, function (err) {
-		if (!err) {
-			console.log('Node Server has subscribed to ', TOPIC_LUMIERE);
-		}
-  })
-  client.subscribe(TOPIC_GAZ, function (err) {
-		if (!err) {
-			console.log('Node Server has subscribed to ', TOPIC_GAZ);
-		}
-	})
-	client.subscribe(TOPIC_TEMP, function (err) {
-		if (!err) {
-			console.log('Node Server has subscribed to ', TOPIC_TEMP);
-		}
-	})
+client.on('connect', function() {
+    client.subscribe(TOPIC_MICRO, function(err) {
+        if (!err) {
+            console.log('Node Server has subscribed to ', TOPIC_MICRO);
+        }
+    })
+    client.subscribe(TOPIC_MOUVEMENT, function(err) {
+        if (!err) {
+            console.log('Node Server has subscribed to ', TOPIC_MOUVEMENT);
+        }
+    })
+    client.subscribe(TOPIC_LUMIERE, function(err) {
+        if (!err) {
+            console.log('Node Server has subscribed to ', TOPIC_LUMIERE);
+        }
+    })
+    client.subscribe(TOPIC_GAZ, function(err) {
+        if (!err) {
+            console.log('Node Server has subscribed to ', TOPIC_GAZ);
+        }
+    })
+    client.subscribe(TOPIC_TEMP, function(err) {
+        if (!err) {
+            console.log('Node Server has subscribed to ', TOPIC_TEMP);
+        }
+    })
 });
 
-client.on('message', function (topic, message) {
+client.on('message', function(topic, message) {
 
-  console.log(message.toString());
-  
-  // Parsing du message supposé recu au format JSON
-  try{
-    if(topic == TOPIC_MICRO || topic == TOPIC_MOUVEMENT || topic == TOPIC_LUMIERE || topic == TOPIC_GAZ || topic == TOPIC_TEMP){
-      var res = getMessageFromObject(message);
-      if(ifExist(res)) {
-        updateValue(res)
-      } else {
-        addCapteur(res)
-      }
-    } 
-  }
-  catch(error){
-    //console.log(error)
-    //throw error
-  }
+    console.log(message.toString());
+
+    // Parsing du message supposé recu au format JSON
+    try {
+        if (topic == TOPIC_MICRO || topic == TOPIC_MOUVEMENT || topic == TOPIC_LUMIERE || topic == TOPIC_GAZ || topic == TOPIC_TEMP) {
+            var res = getMessageFromObject(message);
+            if (ifExist(res)) {
+                updateValue(res)
+            } else {
+                addCapteur(res)
+            }
+        }
+    } catch (error) {
+        //console.log(error)
+        //throw error
+    }
 
 });
 
 /************************************************** */
 /* SECURITE : Algo SHA256 -> décryptage             */
 /************************************************** */
-var list = [{who: "5E:FF:56:A2:AF:15", value: 1, type: "Capteur senseur"}, 
-            {who: "5E:FF:56:A2:AF:41", value: 0.5, type: "Capteur mouvement"}, 
-            {who: "5E:FF:56:A2:AF:10", value: 50, type: "Microphone"}, 
-            {who: "5E:FF:56:A1:AF:15", value: 11, type: "Capteur thermique"}, 
-            {who: "5E:FF:01:A2:AF:15", value: 100, type: "Capteur lumiere"}]
+var list = [{ who: "5E:FF:56:A2:AF:15", value: [0, 1, 0, 1, 0, 0, 0], type: "Capteur senseur" },
+    { who: "5E:FF:56:A2:AF:41", value: [31, 31, 30, 31, 30, 30, 31], type: "Capteur mouvement" },
+    { who: "5E:FF:56:A2:AF:10", value: [1, 1, 0, 1, 0, 0, 1], type: "Microphone" },
+    { who: "5E:FF:56:A1:AF:15", value: [10, 100, 80, 81, 90, 70, 81], type: "Capteur thermique" },
+    { who: "5E:FF:01:A2:AF:15", value: [100, 51, 50, 1, 0, 44, 1], type: "Capteur lumiere" }
+]
 
 function testSHA256() {
     var ciphertext = CryptoJS.AES.encrypt('5E:FF:56:A2:AF:15;toto titi tutu', 'miagestic').toString();
     console.log('[testSHA256] Voici la data: ' + ciphertext)
-    // Decrypt
-    var bytes  = CryptoJS.AES.decrypt(ciphertext, 'miagestic');
+        // Decrypt
+    var bytes = CryptoJS.AES.decrypt(ciphertext, 'miagestic');
     var originalText = bytes.toString(CryptoJS.enc.Utf8)
     console.log('[testSHA256] Voici la data: ' + originalText) // 'my message'
 }
@@ -117,30 +117,30 @@ function getMessageFromObject(data) {
     //var originalText = bytes.toString(CryptoJS.enc.Utf8)
     //console.log('cryptage: ' + originalText)
     originalText = data
-    if(originalText.length != 0) {
-      // Qui l'a envoyé ? Qu'est ce qu'il a envoyé ?
-      // Structure de 'data' : [Adresse MAC];[Value];[Type]
-      console.log('get: ' + originalText);
-      var res = originalText.split(';')
-      var obj = new Object();
-      if(res.length == 3) {
-        obj.mac = res[0];
-        obj.value  = res[1];
-        obj.type = res[2];
-      } 
-      console.log('mon objet de retour: [' + obj.mac + ', ' + obj.value + ', ' + obj.type + ']')
+    if (originalText.length != 0) {
+        // Qui l'a envoyé ? Qu'est ce qu'il a envoyé ?
+        // Structure de 'data' : [Adresse MAC];[Value];[Type]
+        console.log('get: ' + originalText);
+        var res = originalText.split(';')
+        var obj = new Object();
+        if (res.length == 3) {
+            obj.mac = res[0];
+            obj.value = res[1];
+            obj.type = res[2];
+        }
+        console.log('mon objet de retour: [' + obj.mac + ', ' + obj.value + ', ' + obj.type + ']')
     } else {
-      console.log('[WARN] le décryptage a échoué')
+        console.log('[WARN] le décryptage a échoué')
     }
     return obj
 }
 
 function getList() {
-  var tab = new Array();
-  list.forEach(element => {
-    tab[element.who] = element
-  })
-  return tab;
+    var tab = new Array();
+    list.forEach(element => {
+        tab[element.who] = element
+    })
+    return tab;
 }
 
 function addCapteur(capteur) {
@@ -156,12 +156,12 @@ function removeCapteur(capteur) {
 }
 
 function updateValue(capteur) {
-  list.forEach(element => {
-    if(element.who == capteur.who) {
-      removeCapteur(element)
-      addCapteur(element)
-    }
-  });
+    list.forEach(element => {
+        if (element.who == capteur.who) {
+            removeCapteur(element)
+            addCapteur(element)
+        }
+    });
 }
 
 function ifExist(capteur) {

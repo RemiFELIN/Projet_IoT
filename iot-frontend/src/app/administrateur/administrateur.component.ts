@@ -24,7 +24,6 @@ export class AdministrateurComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscription = this.capteurService.getCapteurs().subscribe(capteurs => this.capteurs = capteurs)
-    console.log(this.capteurs);
   }
 
   supprimer(){

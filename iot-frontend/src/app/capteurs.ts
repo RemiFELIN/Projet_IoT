@@ -10,5 +10,7 @@ export class Capteur {
         warning:string;
         success:string
     };
-    ip:string;
+    who?:string;
+    value?:string;
+    etat?:number;
 }

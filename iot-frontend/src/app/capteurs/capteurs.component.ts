@@ -1,37 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { GetCapteursService } from '../services/get-capteurs.service';
 import { Subscription } from 'rxjs';
 import { Capteur } from '../capteurs';
 import { capteurs } from '../mock-capteurs';
-import {FormControl, FormGroup} from '@angular/forms';
 @Component({
   selector: 'app-capteurs',
   templateUrl: './capteurs.component.html',
   styleUrls: ['./capteurs.component.css']
 })
 
-export class CapteursComponent implements OnInit {
+export class CapteursComponent {
 
   gaz: number = 0;
   mouvement: number = 0;
   bruit: number = 1;
   subscription: Subscription;
   listOfCapteur: Array<Capteur> = new Array<Capteur>();
-  selectedValue: string = "micro";
+  selectedValue: Capteur;
   ip:string;
   capteur: Capteur;
   capteurs: Capteur[];
-  data: Capteur;
-  states = [
-    {name: 'Arizona', abbrev: 'AZ'},
-    {name: 'California', abbrev: 'CA'},
-    {name: 'Colorado', abbrev: 'CO'},
-    {name: 'New York', abbrev: 'NY'},
-    {name: 'Pennsylvania', abbrev: 'PA'},
-  ];
+  data: Capteur[];
 
-  form = new FormGroup({
-    state: new FormControl(this.states[3])})
 
   constructor(private capteurService: GetCapteursService) { 
     this.capteurs = capteurs;
@@ -40,13 +30,15 @@ export class CapteursComponent implements OnInit {
   }
 
   addCapteur(){
-    console.log(capteurs)
-    const c = capteurs.find(c => console.log(this.selectedValue));
-    console.log(c);
-    // this.listOfCapteur.push(c);
-  }
-
-  ngOnInit(): void {
+    alert("Aucun object connecté avec cette adresse IP");
+    capteurs.forEach(c =>{
+      if(c.type == this.selectedValue.type){
+        const cap = c;
+        cap.who = this.ip;
+        this.listOfCapteur.push(c);
+      }
+    })
+    this.capteurService.updateCapteurs(this.listOfCapteur);
   }
 
 }

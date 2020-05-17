@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CapteursComponent } from './capteurs/capteurs.component';
-import { GraphGazComponent } from './graph-gaz/graph-gaz.component';
+import { GraphComponent } from './graph/graph.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CapteursComponent,
-    GraphGazComponent,
+    GraphComponent,
   ],
   imports: [
     BrowserModule,

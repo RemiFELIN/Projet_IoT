@@ -22,19 +22,67 @@
 
 <ul class="list-group" *ngFor="let capteur of listOfCapteur">
 
-    <li (click)="openModal(content,capteur)" style="cursor: pointer;" *ngIf="capteur.value > 30" class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
-        <b>{{capteur.who}}</b>{{capteur.text.success}}
-        <img [src]="capteur.src.success" class="icon">
-    </li>
+    <span *ngIf="capteur.type == 'Microphone'">
+        <li (click)="openModal(content,capteur)" style="cursor: pointer;" *ngIf="capteur.value < 30" class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+            <b>{{capteur.who}}</b>{{capteur.text.success}}
+            <img [src]="capteur.src.success" class="icon">
+        </li>
 
-    <li (click)="openModal(content,capteur)" style="cursor: pointer;" *ngIf="capteur.value <= 30 && capteur.value >= 10 && capteur.text.warning" class="list-group-item d-flex justify-content-between align-items-center list-group-item-warning">
-        <b>{{capteur.who}}</b>{{capteur.text.warning}}
-        <img [src]="capteur.src.warning" class="icon">
-    </li>
+        <li (click)="openModal(content,capteur)" style="cursor: pointer;" *ngIf="capteur.value >= 30 && capteur.value <= 10 && capteur.text.warning" class="list-group-item d-flex justify-content-between align-items-center list-group-item-warning">
+            <b>{{capteur.who}}</b>{{capteur.text.warning}}
+            <img [src]="capteur.src.warning" class="icon">
+        </li>
 
-    <li (click)="openModal(content,capteur)" style="cursor: pointer;" *ngIf="capteur.value < 10" class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
-        <b>{{capteur.who}}</b>{{capteur.text.danger}}
-        <img [src]="capteur.src.danger" class="icon">
-    </li>
+        <li (click)="openModal(content,capteur)" style="cursor: pointer;" *ngIf="capteur.value > 10" class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+            <b>{{capteur.who}}</b>{{capteur.text.danger}}
+            <img [src]="capteur.src.danger" class="icon">
+        </li>
+    </span>
+
+    <span *ngIf="capteur.type == 'Capteur mouvement' || capteur.type == 'Capteur senseur'">
+        <li (click)="openModal(content,capteur)" style="cursor: pointer;" *ngIf="capteur.value == 0" class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+            <b>{{capteur.who}}</b>{{capteur.text.success}}
+            <img [src]="capteur.src.success" class="icon">
+        </li>
+
+        <li (click)="openModal(content,capteur)" style="cursor: pointer;" *ngIf="capteur.value == 1" class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+            <b>{{capteur.who}}</b>{{capteur.text.danger}}
+            <img [src]="capteur.src.danger" class="icon">
+        </li>
+    </span>
+
+    <span *ngIf="capteur.type == 'Capteur lumiere'">
+        <li (click)="openModal(content,capteur)" style="cursor: pointer;" *ngIf="capteur.value < 300" class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+            <b>{{capteur.who}}</b>{{capteur.text.success}}
+            <img [src]="capteur.src.success" class="icon">
+        </li>
+
+        <li (click)="openModal(content,capteur)" style="cursor: pointer;" *ngIf="capteur.value >= 300 && capteur.value <800" class="list-group-item d-flex justify-content-between align-items-center list-group-item-warning">
+            <b>{{capteur.who}}</b>{{capteur.text.warning}}
+            <img [src]="capteur.src.warning" class="icon">
+        </li>
+
+        <li (click)="openModal(content,capteur)" style="cursor: pointer;" *ngIf="capteur.value > 800" class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+            <b>{{capteur.who}}</b>{{capteur.text.danger}}
+            <img [src]="capteur.src.danger" class="icon">
+        </li>
+    </span>
+
+    <span *ngIf="capteur.type == 'Capteur thermique'">
+        <li (click)="openModal(content,capteur)" style="cursor: pointer;" *ngIf="capteur.value < 33" class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+            <b>{{capteur.who}}</b>{{capteur.text.success}}
+            <img [src]="capteur.src.success" class="icon">
+        </li>
+
+        <li (click)="openModal(content,capteur)" style="cursor: pointer;" *ngIf="capteur.value >= 33 && capteur.value <= 39" class="list-group-item d-flex justify-content-between align-items-center list-group-item-warning">
+            <b>{{capteur.who}}</b>{{capteur.text.warning}}
+            <img [src]="capteur.src.warning" class="icon">
+        </li>
+
+        <li (click)="openModal(content,capteur)" style="cursor: pointer;" *ngIf="capteur.value > 39" class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+            <b>{{capteur.who}}</b>{{capteur.text.danger}}
+            <img [src]="capteur.src.danger" class="icon">
+        </li>
+    </span>
 
 </ul>

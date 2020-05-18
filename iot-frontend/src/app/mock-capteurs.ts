@@ -11,7 +11,8 @@ export const capteurs: Capteur[] = [
             danger: "../../assets/noise.svg",
             warning: "../../assets/warning.svg",
             success: "../../assets/safe.svg",
-        }
+        },
+        seuil: 100,
     },
     {
         type: "Capteur senseur", text: {
@@ -23,7 +24,8 @@ export const capteurs: Capteur[] = [
             danger: "../../assets/death.svg",
             warning: "../../assets/warning.svg",
             success: "../../assets/safe.svg",
-        }
+        },
+        seuil: 1,
     },
     {
         type: "Capteur mouvement", text: {
@@ -35,7 +37,8 @@ export const capteurs: Capteur[] = [
             danger: "../../assets/thief.svg",
             warning: "../../assets/warning.svg",
             success: "../../assets/safe.svg",
-        }
+        },
+        seuil: 1,
     },
     {
         type: "Capteur thermique", text: {
@@ -47,11 +50,13 @@ export const capteurs: Capteur[] = [
             danger: "../../assets/hot.svg",
             warning: "../../assets/warning.svg",
             success: "../../assets/safe.svg",
-        }
+        },
+        seuil: 50,
+
     },
     {
         type: "Capteur lumiere", text: {
-            danger: "Lumière allumé chez vous",
+            danger: "Attention la lumière est allumé chez vous",
             warning: "De la lumière a été detecté",
             success: "Aucune lumière detecté",
         },
@@ -59,6 +64,8 @@ export const capteurs: Capteur[] = [
             danger: "../../assets/light.svg",
             warning: "../../assets/warning.svg",
             success: "../../assets/safe.svg",
-        }
+        },
+        seuil: 1000,
+
     },
 ];

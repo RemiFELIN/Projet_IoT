@@ -102,31 +102,32 @@ var list = [{ who: "5E:FF:56:A2:AF:15", value: 0, type: "Capteur senseur" },
 ]
 
 function simulation() {
-  setInterval(() => {
-    var list = [{who: "5E:FF:56:A2:AF:15", value: Math.floor(Math.random() * 100), type: "Capteur senseur"}, 
-                {who: "5E:FF:56:A2:AF:41", value: Math.floor(Math.random() * 100), type: "Capteur mouvement"}, 
-                {who: "5E:FF:56:A2:AF:10", value: Math.floor(Math.random() * 100), type: "Microphone"}, 
-                {who: "5E:FF:56:A1:AF:15", value: Math.floor(Math.random() * 100), type: "Capteur thermique"}, 
-                {who: "5E:FF:01:A2:AF:15", value: Math.floor(Math.random() * 100), type: "Capteur lumiere"}]
-    list.forEach(element => {
-      var s = element.who + ";" + element.value + ";" + element.type
-      var ciphertext = CryptoJS.AES.encrypt(s, 'miage').toString();
-      console.log('[BEGIN] cryptage: ' + ciphertext)
-      var res = getMessageFromObject(ciphertext)
-      if(isExist(res.who)){
-        updateValue(res)
-      } else {
-        addCapteur(res)
-      }
-    });
-  }, 8000);
+    setInterval(() => {
+        var list = [{ who: "5E:FF:56:A2:AF:15", value: Math.round(Math.random()), type: "Capteur senseur" },
+            { who: "5E:FF:56:A2:AF:41", value: Math.round(Math.random()), type: "Capteur mouvement" },
+            { who: "5E:FF:56:A2:AF:10", value: Math.floor(Math.random() * 100), type: "Microphone" },
+            { who: "5E:FF:56:A1:AF:15", value: Math.floor(Math.random() * 45), type: "Capteur thermique" },
+            { who: "5E:FF:01:A2:AF:15", value: Math.floor(Math.random() * 1000), type: "Capteur lumiere" }
+        ]
+        list.forEach(element => {
+            var s = element.who + ";" + element.value + ";" + element.type
+            var ciphertext = CryptoJS.AES.encrypt(s, 'miage').toString();
+            console.log('[BEGIN] cryptage: ' + ciphertext)
+            var res = getMessageFromObject(ciphertext)
+            if (isExist(res.who)) {
+                updateValue(res)
+            } else {
+                addCapteur(res)
+            }
+        });
+    }, 8000);
 }
 
 function testSHA256() {
     // Encrypt
     var ciphertext = CryptoJS.AES.encrypt('5E:FF:56:A2:AF:15;toto titi tutu', 'miage').toString();
     console.log('[testSHA256] Voici la data: ' + ciphertext)
-    // Decrypt
+        // Decrypt
     var bytes = CryptoJS.AES.decrypt(ciphertext, 'miage');
     var originalText = bytes.toString(CryptoJS.enc.Utf8)
     console.log('[testSHA256] Voici la data: ' + originalText) // 'my message'
@@ -135,7 +136,7 @@ function testSHA256() {
 // Pour le front !
 function getMessageFromObject(data) {
     // Tout d'abord, on décode le message avec notre clé publique
-    var bytes  = CryptoJS.AES.decrypt(data, 'miage')
+    var bytes = CryptoJS.AES.decrypt(data, 'miage')
     var originalText = bytes.toString(CryptoJS.enc.Utf8)
     if (originalText.length != 0) {
         // Qui l'a envoyé ? Qu'est ce qu'il a envoyé ?

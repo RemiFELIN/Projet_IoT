@@ -14,4 +14,5 @@ export class Capteur {
     value?:number;
     values?:number[];
     etat?:number;
+    seuil?: number;
 }

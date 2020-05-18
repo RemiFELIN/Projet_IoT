@@ -29,6 +29,11 @@ export class GetCapteursService {
     }, 10000);
   }
 
+  async requestCapteursFirst() {
+    const url: string = 'http://localhost:3000/listeCapteurs/U2FsdGVkX1+pBMjv9psDPLaiwCNQX0ROlSJB5r9KFn01pQIv9oXGENfE1+DDb7BhYT3FBQeYywcWjE0jZ5Z9KA==';
+    return this.http.get<Capteur[]>(url).toPromise();
+  }
+
   checkIfExist(ip: string){
     const url: string = 'http://localhost:3000/exist/' + ip;
     return this.http.get<Capteur[]>(url).toPromise();

@@ -29,23 +29,16 @@ export class CapteursComponent {
 
   constructor(private capteurService: GetCapteursService, private modalService: NgbModal) {
     this.capteurs = capteurs;
+    this.capteurService.requestCapteursFirst().then(res => this.listOfCapteur = this.addProperties(res));
     this.subscription = this.capteurService.getCapteurs()
       .subscribe(cap => {
-        var tmp = this.addProperties(cap);
-        if(this.listOfCapteur.length == tmp.length){
-          for (let index = 0; index < this.listOfCapteur.length; index++) {
-            for (let jndex = 0; jndex < tmp.length; jndex++) {
-              if(tmp[jndex].who == this.listOfCapteur[index].who){
-                if(this.listOfCapteur[index].values)
-                  this.listOfCapteur[index].values.push(tmp[jndex].value)
-                else
-                  this.listOfCapteur[index].values = [tmp[jndex].value];
-              }
-            }            
-          }
-        }
-        else{
-          this.listOfCapteur = tmp;
+        for (let index = 0; index < this.listOfCapteur.length; index++) {
+          const element = this.listOfCapteur[index];
+          cap.forEach(c => {
+            if(c.who == element.who){
+              this.listOfCapteur[index].values.push(c.value);
+            }
+          })
         }
       });
     this.capteurService.requestCapteurs();
@@ -55,10 +48,11 @@ export class CapteursComponent {
     var res = [];
     arr.forEach(ca => {
       capteurs.forEach(cap => {
-        if(ca.type == cap.type){
+        if (ca.type == cap.type) {
           var tmp = cap;
           tmp.who = ca.who;
-          tmp.value =  ca.value;
+          tmp.value = ca.value;
+          tmp.values = [ca.value];
           res.push(tmp)
         }
       })
@@ -66,7 +60,22 @@ export class CapteursComponent {
     return res;
   }
 
+  addPropertie(ca: Capteur): Capteur {
+    var res = null;
+    capteurs.forEach(cap => {
+      if (ca.type == cap.type) {
+        var tmp = cap;
+        tmp.who = ca.who;
+        tmp.value = ca.value;
+        tmp.values = [ca.value];
+        res = tmp
+      }
+    })
+    return res;
+  }
+
   openModal(content, capt: Capteur) {
+    console.log(capt.values)
     this.modalService.open(content, { size: 'xl' });
     var ctx = document.getElementById("graph");
     var myChart = new Chart(ctx, {
@@ -75,7 +84,7 @@ export class CapteursComponent {
         labels: ['-60s', '-50s', '-40s', '-30s', '-20s', '-10s', 'Maintenant'],
         datasets: [{
           label: capt.type,
-          data: capt.values ,
+          data: capt.values,
           backgroundColor: [
             'rgba(147,112,219,0.2)',
           ],
@@ -90,7 +99,7 @@ export class CapteursComponent {
           yAxes: [{
             ticks: {
               beginAtZero: true,
-              suggestedMax: 100
+              suggestedMax: capt.seuil
             }
 
           }]
@@ -128,7 +137,7 @@ export class CapteursComponent {
 
   }
 
-  supprimer(){
+  supprimer() {
     this.capteurService.supprimer(this.suppCapteur);
   }
 
